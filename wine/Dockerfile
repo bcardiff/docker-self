@@ -1,6 +1,6 @@
 # Image bcardiff/self:wine
 
-# The published image is based on this Docker file
+# The published image is based on this Docker file after running ./winecfg
 #
 # $ docker run -e DISPLAY=<MY LOCAL IP>:0 -it bcardiff/self:wine bash
 #
@@ -18,12 +18,20 @@ RUN dpkg --add-architecture i386
 
 RUN apt-get update && \
     apt-get install -y software-properties-common && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN add-apt-repository ppa:wine/wine-builds
+RUN add-apt-repository ppa:ubuntu-wine/ppa
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y wine && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install --no-install-recommends -y wine1.8 winetricks && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ENV DISPLAY :0
+
+RUN echo "user ALL=NOPASSWD: ALL" >> /etc/sudoers
+
+RUN useradd -ms /bin/bash user && adduser user sudo
+USER user
+ENV HOME /home/user
+ENV WINEPREFIX /home/user/.wine
+WORKDIR /home/user

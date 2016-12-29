@@ -4,7 +4,6 @@
 # Image bcardiff/self:wine-llvm-mxe
 # matches after running:
 # ```
-# cd /root
 # git clone https://github.com/lbguilherme/mxe.git
 # git checkout updated-gc
 # # Check http://mxe.cc/#requirements for a list of dependencies
@@ -13,6 +12,8 @@
 # ```
 #
 FROM bcardiff/self:wine-llvm
+
+USER root
 
 RUN apt-get update && \
     apt-get install -y \
@@ -24,4 +25,6 @@ RUN apt-get update && \
     g++-multilib libc6-dev-i386 \
     libtool && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# for 16.04 libtool-bin
 
+USER user
