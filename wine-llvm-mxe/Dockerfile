@@ -1,16 +1,4 @@
-# Image bcardiff/self:wine-llvm-mxe-deps
-# is match this Dockerfile
-#
 # Image bcardiff/self:wine-llvm-mxe
-# matches after running:
-# ```
-# git clone https://github.com/lbguilherme/mxe.git
-# git checkout updated-gc
-# # Check http://mxe.cc/#requirements for a list of dependencies
-# # (or just run the comand below and get an error listing what is missing)
-# make MXE_TARGETS=x86_64-w64-mingw32.static gcc gc libevent libiconv # This will take some considerable time
-# ```
-#
 FROM bcardiff/self:wine-llvm
 
 USER root
@@ -23,8 +11,13 @@ RUN apt-get update && \
     openssl p7zip-full patch perl pkg-config python ruby scons \
     sed unzip wget xz-utils \
     g++-multilib libc6-dev-i386 \
-    libtool && \
+    libtool-bin && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-# for 16.04 libtool-bin
 
 USER user
+
+RUN cd /home/user && \
+    git clone https://github.com/lbguilherme/mxe.git && \
+    cd mxe && \
+    git checkout updated-gc && \
+    make MXE_TARGETS=x86_64-w64-mingw32.static gcc gc libevent libiconv
