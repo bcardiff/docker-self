@@ -1,4 +1,4 @@
-# Image bcardiff/self:crystal-win-devel-0.20.3
+# Image bcardiff/self:crystal-win-devel
 FROM bcardiff/self:wine-llvm-mxe
 
 USER root
@@ -10,7 +10,7 @@ RUN \
   echo "deb https://dist.crystal-lang.org/apt crystal main" > /etc/apt/sources.list.d/crystal.list && \
   apt-get update && \
   apt-get install -y crystal gcc pkg-config libssl-dev libxml2-dev libyaml-dev libgmp-dev git make && \
-  apt-get clean && sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+  apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 USER user
 
@@ -29,9 +29,9 @@ CMD ["bash"]
 #  - https://github.com/docker/docker/issues/8710#issuecomment-72669844
 
 # Start a docker container to work on that code from your `win` checkout.
-# $ docker run --rm -it -e DISPLAY=192.168.0.138:0 -v $(pwd):/home/user/src bcardiff/self:crystal-win-devel-0.20.3 bash
+# $ docker run --rm -it -e DISPLAY=192.168.0.138:0 -v $(pwd):/home/user/src bcardiff/self:crystal-win-devel bash
 #
-# LLVM is installed at: ~/.wine/drive_c/LLVM
+# LLVM is installed at: ~/.wine/drive_c/LLVM-3.9.0
 
 # # cd /home/user/src
 # # echo 'puts "Hello Windows!"' > foo.cr
